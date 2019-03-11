@@ -134,7 +134,7 @@ class Plyr extends Component {
       PropTypes.shape({
         src: PropTypes.string.isRequired,
         type: PropTypes.string.isRequired,
-        size: PropTypes.string,
+        size: PropTypes.number,
       })
     ),
     tracks: PropTypes.arrayOf(
