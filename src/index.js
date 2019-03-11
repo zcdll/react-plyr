@@ -2,11 +2,19 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import plyr from 'plyr';
 
+import difference from 'lodash.difference';
+import pick from 'lodash.pick';
+
 import defaultProps from './defaultProps';
 
 class Plyr extends Component {
   player = null;
   elementRef = new React.createRef();
+
+  restProps = difference(
+    Object.keys(this.props),
+    Object.keys(Plyr.defaultProps)
+  );
 
   state = {
     muted: null,
@@ -18,16 +26,34 @@ class Plyr extends Component {
 
   // Specifies the default values for props:
   static defaultProps = {
-    type: 'youtube',
-    // className: 'react-plyr',
+    provider: 'youtube',
+    videoId: null,
+    url: null,
     tracks: [],
+    sources: [],
+
+    onReady: () => {},
+    onPlay: () => {},
+    onPause: () => {},
+    onEnd: () => {},
+    onLoadedData: () => {},
+    onSeeked: () => {},
+    onRateChange: () => {},
+    onTimeUpdate: () => {},
+    onEnterFullscreen: () => {},
+    onExitFullscreen: () => {},
+    onVolumeChange: () => {},
+    onLanguageChange: () => {},
+    onControlsHidden: () => {},
+    onControlsShown: () => {},
+    onCaptionsEnabled: () => {},
+    onCaptionsDisabled: () => {},
 
     ...defaultProps,
   };
 
   static propTypes = {
-    type: PropTypes.oneOf(['youtube', 'vimeo', 'video', 'audio']),
-    // className: PropTypes.string,
+    provider: PropTypes.oneOf(['youtube', 'vimeo', 'html5', 'audio']),
     videoId: PropTypes.string,
     url: PropTypes.string,
 
@@ -300,18 +326,17 @@ class Plyr extends Component {
   renderPlayerWithVideoId = () => {
     return (
       <div
-        className={this.props.className}
-        style={this.props.style}
-        data-plyr-provider={this.props.type}
+        data-plyr-provider={this.props.provider}
         data-plyr-embed-id={this.props.videoId}
         ref={this.elementRef}
+        {...pick(this.props, this.restProps)}
       />
     );
   };
 
   // For video support for source defined as link to those video files.
   renderPlayerWithSRC = () => {
-    const { sources, url, preload, poster, className, tracks } = this.props;
+    const { sources, url, preload, poster, tracks, ...rest } = this.props;
 
     const captionsMap = tracks.map((source, index) => {
       const {
@@ -341,10 +366,10 @@ class Plyr extends Component {
     if (sources && Array.isArray(sources) && sources.length) {
       return (
         <video
-          className={className}
           preload={preload}
           poster={poster}
           ref={this.elementRef}
+          {...pick(rest, this.restProps)}
         >
           {sources.map((source, index) => (
             <source
@@ -361,11 +386,11 @@ class Plyr extends Component {
 
     return (
       <video
-        className={className}
         src={url}
         preload={preload}
         poster={poster}
         ref={this.elementRef}
+        {...pick(rest, this.restProps)}
       >
         {captionsMap}
       </video>
@@ -373,11 +398,11 @@ class Plyr extends Component {
   };
 
   renderAudioPlayer = () => {
-    const { sources, url, preload, className } = this.props;
+    const { sources, url, preload, ...rest } = this.props;
 
     if (sources && Array.isArray(sources) && sources.length) {
       return (
-        <audio className={className} preload={preload} ref={this.elementRef}>
+        <audio preload={preload} ref={this.elementRef} {...rest}>
           {sources.map((source, index) => (
             <source key={index} src={source.src} type={source.type} />
           ))}
@@ -387,18 +412,18 @@ class Plyr extends Component {
 
     return (
       <audio
-        className={className}
         preload={preload}
         src={url}
         ref={this.elementRef}
+        {...pick(rest, this.restProps)}
       />
     );
   };
 
   render() {
-    if (this.props.type === 'audio') {
+    if (this.props.provider === 'audio') {
       return this.renderAudioPlayer();
-    } else if (this.props.type === 'video') {
+    } else if (this.props.provider === 'html5') {
       return this.renderPlayerWithSRC();
     }
 

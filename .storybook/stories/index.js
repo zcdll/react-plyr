@@ -11,11 +11,11 @@ import Plyr from '../../src';
 
 storiesOf('React Plyr', module)
   .add('Simple Youtube video', withInfo()(() => (
-    <Plyr videoId="CDFN1VatiJA" debug />
+    <Plyr videoId="CDFN1VatiJA" />
   )))
   .add('Simple Vimeo video', withInfo()(() => (
     <Plyr
-      type="vimeo"
+      provider="vimeo"
       videoId="https://vimeo.com/189789787"
     />
   )))
@@ -39,7 +39,7 @@ storiesOf('React Plyr', module)
   )))
   .add('Default video with file address', withInfo()(() => (
     <Plyr
-      type="video"
+      provider="html5"
       url="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4"
       title="View From A Blue Moon"
       poster="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg"
@@ -47,7 +47,7 @@ storiesOf('React Plyr', module)
   )))
   .add('Default video with multiple file addresses', withInfo()(() => (
     <Plyr
-      type="video"
+      provider="html5"
       title="View From A Blue Moon"
       poster="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg"
       sources={[
@@ -95,7 +95,7 @@ storiesOf('React Plyr', module)
   )))
   .add('With captions', withInfo()(() => (
     <Plyr
-      type="video"
+      provider="html5"
       poster="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg"
       onCaptionsEnabled={action('Captions are enabled')}
       onCaptionsDisabled={action('Captions are disabled')}
@@ -105,17 +105,17 @@ storiesOf('React Plyr', module)
         {
           src:'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4',
           type:'video/mp4',
-          size:'576'
+          size: 576
         },
         {
           src:'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4',
           type:'video/mp4',
-          size:'720'
+          size: 720
         },
         {
           src:'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-1080p.mp4',
           type:'video/mp4',
-          size:'1080'
+          size: 1080
 
         }
       ]}
@@ -138,13 +138,13 @@ storiesOf('React Plyr', module)
   )))
   .add('Audio player with url', withInfo()(() => (
     <Plyr
-      type="audio"
+      provider="audio"
       url="https://archive.org/download/testmp3testfile/mpthreetest.mp3"
     />
   )))
   .add('Audio player with sources', withInfo()(() => (
     <Plyr
-      type="audio"
+      provider="audio"
       sources={[
         {
           src: "https://archive.org/download/testmp3testfile/mpthreetest.ogg",
@@ -158,19 +158,11 @@ storiesOf('React Plyr', module)
     />
   )))
   .add('Multiple players on same page', withInfo()(() => (
-    <Fragment>
-      {[
-        'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4',
-        'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4',
-        'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4'
-      ].map((video, index) => (
-        <div key={index} style={{ width: 540 }}>
-          <Plyr
-            url={video}
-            type="video"
-            className={`react-plyr-${index}`}
-          />
-        </div>
-      ))}
-    </Fragment>
+    [
+      'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4',
+      'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4',
+      'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4'
+    ].map((video, index) => (
+      <Plyr key={index} url={video} provider="html5" style={{ width: 540 }} />
+    ))
   )))

@@ -5,13 +5,13 @@ import toJson from 'enzyme-to-json';
 import Plyr from './index';
 
 it('renders a simple Youtube Video', () => {
-  const wrapper = shallow(<Plyr type="youtube" videoId="CDFN1VatiJA" />);
+  const wrapper = shallow(<Plyr provider="youtube" videoId="CDFN1VatiJA" />);
   expect(toJson(wrapper)).toMatchSnapshot();
 });
 
 it('renders a simple Vimeo Video', () => {
   const wrapper = shallow(
-    <Plyr type="vimeo" videoId="https://vimeo.com/189789787" />
+    <Plyr provider="vimeo" videoId="https://vimeo.com/189789787" />
   );
   expect(toJson(wrapper)).toMatchSnapshot();
 });
@@ -19,7 +19,7 @@ it('renders a simple Vimeo Video', () => {
 it('renders a simple HTML5 Video with Captions', () => {
   const wrapper = shallow(
     <Plyr
-      type="video"
+      provider="html5"
       poster="/path/to/poster.jpg"
       url="mymovie.mp4"
       tracks={[

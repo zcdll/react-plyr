@@ -31,11 +31,11 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "npm run clean && babel src --out-dir lib --ignore test.js,setupTests.js",
-    "storybook-build": "build-storybook -c .storybook -o docs",
     "clean": "rimraf lib",
     "prettier": "prettier --single-quote --trailing-comma es5 --write '{src,__{tests,mocks}__}/*.js'",
     "prepublish": "npm test && npm run build",
     "storybook": "start-storybook -s ./public -p 6006",
+    "storybook-build": "build-storybook -c .storybook -o docs",
     "test": "jest",
     "test:all": "jest && npm run test:lint",
     "test:coverage": "jest --coverage",
@@ -59,6 +59,8 @@
     ]
   },
   "dependencies": {
+    "lodash.difference": "^4.5.0",
+    "lodash.pick": "^4.4.0",
     "plyr": "^3.5.2",
     "prop-types": "^15.7.2"
   },
