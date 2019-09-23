@@ -5,7 +5,8 @@
       "@babel/preset-env",
       {
         "targets": {
-          "esmodules": true
+          "esmodules": true,
+          "safari": "9"
         }
       }
     ]
